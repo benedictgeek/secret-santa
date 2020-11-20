@@ -12,4 +12,25 @@ router.post(
   userController.login
 );
 
+router.get(
+  "/get-reset-token/:email",
+  validator("resetToken"),
+  handleValidation,
+  userController.getPasswordResetLink
+);
+
+router.get(
+  "/reset-password",
+  validator("resetPassword"),
+  handleValidation,
+  userController.resetPassword
+);
+
+router.post(
+  "/update",
+  validator("update"),
+  handleValidation,
+  userController.update
+);
+
 module.exports = router;

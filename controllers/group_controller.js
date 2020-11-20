@@ -13,6 +13,7 @@ module.exports.create = async (req, res, next) => {
   });
   try {
     let body = req.body;
+    let isNewUser = false;
     let group = await groupDao.findWithTitle(
       { title: body.title },
       transaction
@@ -30,17 +31,36 @@ module.exports.create = async (req, res, next) => {
       }
       body.password = await bcrypt.hash(body.password, 12);
       user = await userDao.create({ ...body }, transaction);
+      isNewUser = true;
     }
     group = await groupDao.create({ ...body, userId: user.id }, transaction);
     let token = jwt.sign(user, process.env.TOKEN_SECRET, { expiresIn: "24hr" });
     delete user.password;
     transaction.commit();
     res.status(200).json(successResponse({ group, user, token }));
-    //sendmail to user for account creation and group creation
-    mailer(user.email, "Account creation", "test_mail", { name: user.name });
+    isNewUser &&
+      mailer(user.email, "Account creation", "new_account", {
+        name: user.name,
+        linkText: "View",
+      });
+    mailer(user.email, "Group creation", "group_creation", {
+      name: user.name,
+      groupName: group.title.toUpperCase(),
+      linkText: "View",
+    });
   } catch (error) {
     console.log(error);
     transaction.rollback();
+    next(createHttpError(statusCode, error));
+  }
+};
+
+module.exports.getUserGroups = async (req, res, next) => {
+  let statusCode;
+  try {
+    let userGroups = await groupDao.findAllForUser({ userId: req.user.id });
+    res.status(200).json(successResponse(userGroups));
+  } catch (error) {
     next(createHttpError(statusCode, error));
   }
 };

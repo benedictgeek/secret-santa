@@ -14,4 +14,21 @@ router.post(
   memberController.add
 );
 
+router.get(
+  "/delete/:groupId/:email",
+  validator("delete"),
+  handleValidation,
+  checkAdmin,
+  memberController.delete
+);
+
+router.post(
+  "/update",
+  validator("update"),
+  handleValidation,
+  checkAdmin,
+  memberController.update
+);
+
+
 module.exports = router;

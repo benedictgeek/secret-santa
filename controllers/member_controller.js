@@ -12,7 +12,34 @@ module.exports.add = async (req, res, next) => {
     });
     let createdMembers = await memberDao.bulkCreate(groupmembersData);
     res.status(200).json(successResponse(createdMembers));
-    //mail members of new group they are just added to
+  } catch (error) {
+    next(createHttpError(statusCode, error));
+  }
+};
+
+module.exports.delete = async (req, res, next) => {
+  let statusCode;
+  try {
+    let body = req.params;
+    let deleteMember = await memberDao.delete({
+      email: body.email,
+      groupId: body.groupId,
+    });
+    res.status(200).json(successResponse("Member deleted successfully"));
+  } catch (error) {
+    next(createHttpError(statusCode, error));
+  }
+};
+
+module.exports.update = async (req, res, next) => {
+  let statusCode;
+  try {
+    let body = req.body;
+    let updatedMemberData = await memberDao.updateOne({
+      ...body,
+    });
+    updatedMemberData = updatedMemberData[1][0];
+    res.status(200).json(successResponse(updatedMemberData));
   } catch (error) {
     next(createHttpError(statusCode, error));
   }

@@ -54,7 +54,7 @@ module.exports = async (
         to: userEmail,
         subject: subject,
         template: template,
-        context: { ...htmlInputData, linkText: "View" },
+        context: { ...htmlInputData, },
         text: "test_mail",
         // html: "Hello",
         attachments: attachments != null ? attachments : null,

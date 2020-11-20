@@ -2,6 +2,7 @@ const {
   stringBodyRequired,
   stringBodyNotRequired,
   idBody,
+  idParam,
 } = require("../../utils/validation_commons");
 
 module.exports.validator = (method) => {
@@ -11,6 +12,10 @@ module.exports.validator = (method) => {
         idBody("groupId"),
         stringBodyNotRequired("title"),
         stringBodyNotRequired("description"),
+      ];
+    case "fetch":
+      return [
+        idParam("groupId"),
       ];
 
     default:

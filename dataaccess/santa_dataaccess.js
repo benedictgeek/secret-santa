@@ -6,25 +6,25 @@ const SantaEvent = models.SantaEvent;
 module.exports.create = async (data, transaction = null) => {
   try {
     let result = await SantaEvent.create(data, {
-      include: [
-        {
-          model: models.SantaEvent,
-          as: "santaEvent",
-        },
-        {
-          model: models.Member,
-          as: "provider",
-        },
-        {
-          model: models.Member,
-          as: "recipient",
-        },
-      ],
       transaction: transaction,
       plain: true,
     });
     return JSON.parse(JSON.stringify(result));
   } catch (err) {
     throw err.errors;
+  }
+};
+
+module.exports.findAllForGroup = async (data, transaction = null) => {
+  try {
+    let result = await SantaEvent.findAll({
+      where: {
+        id: data.groupId,
+      },
+      transaction: transaction,
+    });
+    return JSON.parse(JSON.stringify(result));
+  } catch (error) {
+    throw error.errors;
   }
 };
