@@ -17,5 +17,16 @@ module.exports.groupTests = (app) => () => {
     expect(data.user.email).toBe(email);
     expect(data.group.title).toBe(title);
     expect(data.token).not.toBeNull();
+    process.env.GROUP_ID = data.group.id;
+    process.env.BEARER_TOKEN = data.token;
+  });
+  it("should get all user(admin) groups", async () => {
+    const res = await request(app)
+      .get(`/groups/get-groups`)
+      .set("Authorization", `Bearer ${process.env.BEARER_TOKEN}`);
+    let data = res.body.data;
+    expect(res.statusCode).toEqual(200);
+
+    expect(data.length).toBe(1);
   });
 };

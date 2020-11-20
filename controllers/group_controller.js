@@ -61,6 +61,7 @@ module.exports.getUserGroups = async (req, res, next) => {
     let userGroups = await groupDao.findAllForUser({ userId: req.user.id });
     res.status(200).json(successResponse(userGroups));
   } catch (error) {
+    console.log(error);
     next(createHttpError(statusCode, error));
   }
 };

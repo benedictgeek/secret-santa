@@ -41,8 +41,9 @@ module.exports = (sequelize, DataTypes) => {
 
   Member.associate = function (models) {
     Member.belongsTo(models.Group, {
-      as: "members",
+      as: "group",
     });
+
   };
 
   return Member;

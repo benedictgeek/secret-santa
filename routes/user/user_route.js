@@ -19,7 +19,7 @@ router.get(
   userController.getPasswordResetLink
 );
 
-router.get(
+router.post(
   "/reset-password",
   validator("resetPassword"),
   handleValidation,

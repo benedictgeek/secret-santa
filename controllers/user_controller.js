@@ -9,7 +9,7 @@ module.exports.login = async (req, res, next) => {
   let statusCode;
   try {
     let body = req.body;
-    let user = userDao.findWithEmail({ email: body.email });
+    let user = await userDao.findWithEmail({ email: body.email });
     if (user == null) {
       statusCode = 401;
       throw "Unauthorized";
@@ -22,6 +22,7 @@ module.exports.login = async (req, res, next) => {
     let token = jwt.sign(user, process.env.TOKEN_SECRET, { expiresIn: "24hr" });
     res.status(200).json(successResponse(token));
   } catch (error) {
+    console.log(error);
     next(createHttpError(statusCode, error));
   }
 };
@@ -53,11 +54,11 @@ module.exports.getPasswordResetLink = async (req, res, next) => {
 
     mailer(userData.email, "Secret Santa Reset password", "reset_password", {
       name: userData.name,
-      groupName: group.title.toUpperCase(),
       link: `${req.headers.origin}/reset-password/${passwordResetToken}`,
       linkText: "Reset",
     });
   } catch (error) {
+    console.log(error);
     next(createHttpError(statusCode, error));
   }
 };

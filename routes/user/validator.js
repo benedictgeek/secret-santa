@@ -5,6 +5,7 @@ const {
   stringBodyNotRequired,
   passwordValidator,
   stringParam,
+  emailValidatorParam,
 } = require("../../utils/validation_commons");
 
 module.exports.validator = (method) => {
@@ -12,9 +13,13 @@ module.exports.validator = (method) => {
     case "login":
       return [emailValidator("email"), passwordValidator];
     case "resetToken":
-      return [stringParam("token")];
+      return [emailValidatorParam];
     case "resetPassword":
-      return [emailValidator("email"), passwordValidator];
+      return [
+        emailValidator("email"),
+        stringBodyRequired("resetToken"),
+        passwordValidator,
+      ];
     case "update":
       return [stringBodyNotRequired("name")];
     default:

@@ -21,7 +21,7 @@ module.exports.validator = (method) => {
     case "delete":
       return [idParam("groupId"), emailValidatorParam];
     case "update":
-      return [stringBodyNotRequired("name")];
+      return [stringBodyNotRequired("name"), emailValidator("email")];
     default:
       break;
   }

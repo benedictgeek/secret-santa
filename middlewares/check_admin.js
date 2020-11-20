@@ -3,7 +3,9 @@ const groupDao = require("../dataaccess/group_dataaccess");
 module.exports.checkAdmin = async (req, res, next) => {
   let statusCode;
   try {
-    let body = req.body || req.params;
+    console.log(req.body);
+    console.log(req.params);
+    let body = { ...req.body, ...req.params };
     let group = await groupDao.findWithId({ groupId: body.groupId });
     if (group == null) {
       statusCode = 404;
@@ -16,6 +18,7 @@ module.exports.checkAdmin = async (req, res, next) => {
     }
     next();
   } catch (error) {
+    console.log(error);
     next(createHttpError(statusCode, error));
   }
 };

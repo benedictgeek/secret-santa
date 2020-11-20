@@ -60,8 +60,7 @@ module.exports.findAllForUser = async (data, transaction = null) => {
       },
       attributes: {
         include: [
-          Sequelize.fn("COUNT", Sequelize.col("members.id")),
-          "membersCount",
+          [Sequelize.fn("COUNT", Sequelize.col("members.id")), "membersCount"],
         ],
       },
       include: [
@@ -77,6 +76,7 @@ module.exports.findAllForUser = async (data, transaction = null) => {
     });
     return JSON.parse(JSON.stringify(result));
   } catch (error) {
+    console.log(error);
     throw error.errors;
   }
 };

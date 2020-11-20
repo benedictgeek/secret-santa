@@ -61,11 +61,11 @@ module.exports = (sequelize, DataTypes) => {
     SantaPair.belongsTo(models.SantaEvent, {
       as: "santaEvent",
     });
-    SantaPair.hasOne(models.Member, {
+    SantaPair.belongsTo(models.Member, {
       foreignKey: "providerId",
       as: "provider",
     });
-    SantaPair.hasOne(models.Member, {
+    SantaPair.belongsTo(models.Member, {
       foreignKey: "recipientId",
       as: "recipient",
     });
