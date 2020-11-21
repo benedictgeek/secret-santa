@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "nodemon node ./bin/www",
+    "migrate:prod": "NODE_ENV=production sequelize db:migrate",
     "cleardev": "sequelize db:migrate:undo:all && sequelize  db:migrate",
     "cleartest": "sequelize db:migrate:undo:all && sequelize  db:migrate",
     "test": "NODE_ENV=test jest  --runInBand  --testTimeout=10000 --detectOpenHandles",

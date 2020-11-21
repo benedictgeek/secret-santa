@@ -12,7 +12,7 @@ router.use("/members", verifyToken, memberApiGroup);
 router.use("/santas", santaApiGroup);
 
 router.get("/", function (req, res, next) {
-  res.json({ message: "This is Santa's Api :)" });
+  res.json({ message: "This is Santa's Api :)", env: process.env.NODE_ENV });
 });
 
 module.exports = router;
