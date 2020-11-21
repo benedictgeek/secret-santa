@@ -37,7 +37,7 @@ module.exports.findWithTitle = async (data, transaction = null) => {
         title: sequelize.where(
           sequelize.fn("LOWER", sequelize.col("title")),
           "=",
-          `${data.title}`
+          `${data.title.toLowerCase()}`
         ),
         status: "active",
       },
