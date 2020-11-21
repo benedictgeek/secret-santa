@@ -59,7 +59,7 @@ module.exports = (sequelize, DataTypes) => {
       as: "group",
     });
     SantaPair.belongsTo(models.SantaEvent, {
-      as: "santaEvent",
+      as: "santa",
     });
     SantaPair.belongsTo(models.Member, {
       foreignKey: "providerId",

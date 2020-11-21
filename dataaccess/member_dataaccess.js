@@ -7,11 +7,11 @@ module.exports.bulkCreate = async (data, transaction = null) => {
   try {
     let result = await Member.bulkCreate(data, {
       transaction: transaction,
-      plain: true,
+      
     });
     return JSON.parse(JSON.stringify(result));
   } catch (err) {
-    console.log(err);
+    
     throw err.errors;
   }
 };
@@ -23,10 +23,10 @@ module.exports.fetchAll = async (data, transaction = null) => {
         groupId: data.groupId,
       },
       transaction: transaction,
-      plain: true,
     });
     return JSON.parse(JSON.stringify(result));
   } catch (err) {
+    
     throw err.errors;
   }
 };
@@ -39,11 +39,11 @@ module.exports.delete = async (data, transaction = null) => {
         groupId: data.groupId,
       },
       transaction: transaction,
-      plain: true,
+
     });
     return JSON.parse(JSON.stringify(result));
   } catch (err) {
-    console.log(err);
+    
     throw err.errors;
   }
 };
@@ -61,7 +61,7 @@ module.exports.updateOne = async (data, transaction = null) => {
     });
     return JSON.parse(JSON.stringify(result));
   } catch (error) {
-    console.log("ERROR", error);
+    
     throw err.errors;
   }
 };

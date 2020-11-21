@@ -6,7 +6,7 @@ const SantaPair = models.SantaPair;
 let includeModels = [
   {
     model: models.SantaEvent,
-    as: "santaEvent",
+    as: "santa",
   },
   {
     model: models.Member,
@@ -21,9 +21,22 @@ let includeModels = [
 module.exports.create = async (data, transaction = null) => {
   try {
     let result = await SantaPair.create(data, {
+      transaction: transaction,
+    });
+    return JSON.parse(JSON.stringify(result));
+  } catch (err) {
+    throw err.errors;
+  }
+};
+
+module.exports.findWithId = async (data, transaction = null) => {
+  try {
+    let result = await SantaPair.findOne({
+      where: {
+        id: data.santaPairId,
+      },
       include: includeModels,
       transaction: transaction,
-      plain: true,
     });
     return JSON.parse(JSON.stringify(result));
   } catch (err) {
@@ -40,7 +53,6 @@ module.exports.findWithProvider = async (data, transaction = null) => {
       },
       include: includeModels,
       transaction: transaction,
-      plain: true,
     });
     return JSON.parse(JSON.stringify(result));
   } catch (err) {
@@ -55,10 +67,10 @@ module.exports.fetchAll = async (data, transaction = null) => {
         santaId: data.santaId,
       },
       transaction: transaction,
-      plain: true,
     });
     return JSON.parse(JSON.stringify(result));
   } catch (err) {
+    console.log("ERROR SHOW", err);
     throw err.errors;
   }
 };

@@ -15,8 +15,8 @@ module.exports.validator = (method) => {
       return [
         idBody("groupId"),
         body("members").isArray().withMessage("Please provide members array"),
-        stringBodyRequired("member.*.name"),
-        emailValidator("member.*.email"),
+        stringBodyRequired("members.*.name"),
+        emailValidator("members.*.email"),
       ];
     case "delete":
       return [idParam("groupId"), emailValidatorParam];

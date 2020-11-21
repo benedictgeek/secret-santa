@@ -8,7 +8,6 @@ module.exports.create = async (data, transaction = null) => {
   try {
     let result = await Group.create(data, {
       transaction: transaction,
-      plain: true,
     });
     return JSON.parse(JSON.stringify(result));
   } catch (err) {
@@ -46,7 +45,6 @@ module.exports.findWithTitle = async (data, transaction = null) => {
     });
     return JSON.parse(JSON.stringify(result));
   } catch (error) {
-    console.log(error);
     throw error.errors;
   }
 };
@@ -76,7 +74,6 @@ module.exports.findAllForUser = async (data, transaction = null) => {
     });
     return JSON.parse(JSON.stringify(result));
   } catch (error) {
-    console.log(error);
     throw error.errors;
   }
 };

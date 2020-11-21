@@ -7,7 +7,7 @@ module.exports.create = async (data, transaction = null) => {
   try {
     let result = await User.create(data, {
       transaction: transaction,
-      plain: true,
+
     });
     return JSON.parse(JSON.stringify(result));
   } catch (err) {

@@ -1,8 +1,11 @@
+const { body } = require("express-validator");
 const {
   stringBodyRequired,
   stringBodyNotRequired,
   idBody,
   idParam,
+  stringParam,
+  emailValidator,
 } = require("../../utils/validation_commons");
 
 module.exports.validator = (method) => {
@@ -14,8 +17,15 @@ module.exports.validator = (method) => {
         stringBodyNotRequired("description"),
       ];
     case "fetch":
+      return [idParam("groupId")];
+    case "pair":
+      return [stringParam("token")];
+    case "sendInvite":
       return [
-        idParam("groupId"),
+        idBody("groupId"),
+        idBody("santaId"),
+        body("emails").isArray().withMessage("Please provide emails array"),
+        emailValidator("emails.*"),
       ];
 
     default:

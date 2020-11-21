@@ -54,13 +54,15 @@ module.exports = async (
         to: userEmail,
         subject: subject,
         template: template,
-        context: { ...htmlInputData, },
+        context: { ...htmlInputData },
         text: "test_mail",
         // html: "Hello",
         attachments: attachments != null ? attachments : null,
       };
-      let sentMail = await transporter.sendMail(mailOptions);
-      console.log(sentMail);
+      transporter
+        .sendMail(mailOptions)
+        .then((sentMail) => console.log(sentMail))
+        .catch((error) => console.log(error.toString().substring(0, 400)));
     }
   } catch (error) {
     console.log("error sending mail");

@@ -11,8 +11,25 @@ router.post(
   "/create",
   validator("create"),
   handleValidation,
+  verifyToken,
   checkAdmin,
   santaController.create
+);
+
+router.post(
+  "/send-invite",
+  validator("sendInvite"),
+  handleValidation,
+  verifyToken,
+  checkAdmin,
+  santaController.sendInvite
+);
+
+router.get(
+  "/pair/:token",
+  validator("pair"),
+  handleValidation,
+  santaController.santaPair
 );
 
 router.get(
@@ -21,7 +38,7 @@ router.get(
   handleValidation,
   verifyToken,
   checkAdmin,
-  santaController.create
+  santaController.fetchAll
 );
 
 module.exports = router;

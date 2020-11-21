@@ -49,7 +49,7 @@ module.exports.create = async (req, res, next) => {
       linkText: "View",
     });
   } catch (error) {
-    console.log(error);
+    
     transaction.rollback();
     next(createHttpError(statusCode, error));
   }
@@ -61,7 +61,7 @@ module.exports.getUserGroups = async (req, res, next) => {
     let userGroups = await groupDao.findAllForUser({ userId: req.user.id });
     res.status(200).json(successResponse(userGroups));
   } catch (error) {
-    console.log(error);
+    
     next(createHttpError(statusCode, error));
   }
 };

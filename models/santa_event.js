@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
 
   SantaEvent.associate = function (models) {
     SantaEvent.belongsTo(models.Group, {
-      as: "santaEvents",
+      as: "group",
     });
   };
 

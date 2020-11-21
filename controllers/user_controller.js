@@ -22,7 +22,7 @@ module.exports.login = async (req, res, next) => {
     let token = jwt.sign(user, process.env.TOKEN_SECRET, { expiresIn: "24hr" });
     res.status(200).json(successResponse(token));
   } catch (error) {
-    console.log(error);
+    
     next(createHttpError(statusCode, error));
   }
 };
@@ -58,7 +58,7 @@ module.exports.getPasswordResetLink = async (req, res, next) => {
       linkText: "Reset",
     });
   } catch (error) {
-    console.log(error);
+    
     next(createHttpError(statusCode, error));
   }
 };
