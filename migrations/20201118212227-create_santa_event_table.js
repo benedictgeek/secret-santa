@@ -44,7 +44,7 @@ module.exports = {
   down: async (queryInterface, Sequelize) => {
     try {
       await queryInterface.dropTable("SantaEvents");
-      await queryInterface.sequelize.query('DROP TYPE "enum_SantaEvents_status";');
+      // await queryInterface.sequelize.query('DROP TYPE "enum_SantaEvents_status";');
       return Promise.resolve();
     } catch (error) {
       return Promise.reject();
