@@ -41,4 +41,22 @@ router.get(
   santaController.fetchAll
 );
 
+router.post(
+  "/update",
+  validator("update"),
+  handleValidation,
+  verifyToken,
+  checkAdmin,
+  santaController.update
+);
+
+router.get(
+  "/delete/:groupId/:santaId",
+  validator("delete"),
+  handleValidation,
+  verifyToken,
+  checkAdmin,
+  santaController.delete
+);
+
 module.exports = router;

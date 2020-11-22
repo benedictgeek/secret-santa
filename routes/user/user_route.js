@@ -13,6 +13,13 @@ router.post(
 );
 
 router.get(
+  "/check/:email",
+  validator("resetToken"),
+  handleValidation,
+  userController.checkEmail
+);
+
+router.get(
   "/get-reset-token/:email",
   validator("resetToken"),
   handleValidation,

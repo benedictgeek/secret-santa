@@ -25,6 +25,11 @@ module.exports = {
         type: DataTypes.TEXT,
         allowNull: true,
       },
+      status: {
+        type: DataTypes.ENUM("active", "deleted"),
+        allowNull: false,
+        defaultValue: "active",
+      },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE,
@@ -37,6 +42,12 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    return queryInterface.dropTable("SantaEvents");
+    try {
+      await queryInterface.dropTable("SantaEvents");
+      await queryInterface.sequelize.query('DROP TYPE "enum_SantaEvents_status";');
+      return Promise.resolve();
+    } catch (error) {
+      return Promise.reject();
+    }
   },
 };

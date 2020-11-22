@@ -1,10 +1,10 @@
-const request = require("supertest");
+const request = require('supertest');
 module.exports.groupTests = (app) => () => {
-  it("should create one group with new email", async () => {
-    let title = "Algorism";
-    let email = "test@me.com";
-    let password = "password12345";
-    let name = " Olushola Ben";
+  it('should create one group with new email', async () => {
+    let title = 'Algorism';
+    let email = 'test@me.com';
+    let password = 'password12345';
+    let name = ' Olushola Ben';
     const res = await request(app).post(`/groups/create`).send({
       title,
       name,
@@ -20,13 +20,26 @@ module.exports.groupTests = (app) => () => {
     process.env.GROUP_ID = data.group.id;
     process.env.BEARER_TOKEN = data.token;
   });
-  it("should get all user(admin) groups", async () => {
+  it('should get all user(admin) groups', async () => {
     const res = await request(app)
       .get(`/groups/get-groups`)
-      .set("Authorization", `Bearer ${process.env.BEARER_TOKEN}`);
+      .set('Authorization', `Bearer ${process.env.BEARER_TOKEN}`);
     let data = res.body.data;
     expect(res.statusCode).toEqual(200);
 
     expect(data.length).toBe(1);
+  });
+  it('should update one group info', async () => {
+    let groupId = process.env.GROUP_ID;
+    let title = 'new title';
+    let description = 'new desc';
+    const res = await request(app)
+      .post(`/groups/update`)
+      .send({ groupId, title, description })
+      .set('Authorization', `Bearer ${process.env.BEARER_TOKEN}`);
+    let data = res.body.data;
+    expect(res.statusCode).toEqual(200);
+    expect(data.title).toBe(title);
+    expect(data.description).toBe(description);
   });
 };

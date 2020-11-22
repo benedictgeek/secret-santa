@@ -1,4 +1,4 @@
-const models = require("../models/index");
+const models = require('../models/index');
 const sequelize = models.sequelize;
 const Sequelize = models.Sequelize;
 const Op = Sequelize.Op;
@@ -20,7 +20,7 @@ module.exports.findWithId = async (data, transaction = null) => {
     let result = await Group.findOne({
       where: {
         id: data.groupId,
-        status: "active",
+        status: 'active',
       },
       transaction: transaction,
     });
@@ -35,11 +35,11 @@ module.exports.findWithTitle = async (data, transaction = null) => {
     let result = await Group.findOne({
       where: {
         title: sequelize.where(
-          sequelize.fn("LOWER", sequelize.col("title")),
-          "=",
+          sequelize.fn('LOWER', sequelize.col('title')),
+          '=',
           `${data.title.toLowerCase()}`
         ),
-        status: "active",
+        status: 'active',
       },
       transaction: transaction,
     });
@@ -54,26 +54,43 @@ module.exports.findAllForUser = async (data, transaction = null) => {
     let result = await Group.findAll({
       where: {
         userId: data.userId,
-        status: "active",
+        status: 'active',
       },
       attributes: {
         include: [
-          [Sequelize.fn("COUNT", Sequelize.col("members.id")), "membersCount"],
+          [Sequelize.fn('COUNT', Sequelize.col('members.id')), 'membersCount'],
         ],
       },
       include: [
         {
           model: models.Member,
-          as: "members",
+          as: 'members',
+          where: { status: 'active' },
           required: false,
           attributes: [],
         },
       ],
-      group: ["Group.id"],
+      group: ['Group.id'],
       transaction: transaction,
     });
     return JSON.parse(JSON.stringify(result));
   } catch (error) {
     throw error.errors;
+  }
+};
+
+module.exports.updateOne = async (data, transaction = null) => {
+  try {
+    let result = await Group.update(data, {
+      where: {
+        id: data.groupId,
+      },
+      transaction: transaction,
+      // plain: true,
+      returning: true,
+    });
+    return JSON.parse(JSON.stringify(result));
+  } catch (error) {
+    throw err.errors;
   }
 };

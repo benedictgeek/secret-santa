@@ -3,18 +3,29 @@ const {
   stringBodyRequired,
   passwordValidatorNotRequired,
   stringBodyNotRequired,
-} = require("../../utils/validation_commons");
+  idBody,
+  idParam,
+} = require('../../utils/validation_commons');
 
 module.exports.validator = (method) => {
   switch (method) {
-    case "create":
+    case 'create':
       return [
-        emailValidator("email"),
-        stringBodyRequired("title"),
-        stringBodyNotRequired("name"),
+        emailValidator('email'),
+        stringBodyRequired('title'),
+        stringBodyNotRequired('name'),
         passwordValidatorNotRequired,
       ];
-
+    case 'update':
+      return [
+        idBody('groupId'),
+        stringBodyNotRequired('title'),
+        stringBodyNotRequired('description'),
+      ];
+    case 'delete':
+      return [
+        idParam('groupId'),
+      ];
     default:
       break;
   }
