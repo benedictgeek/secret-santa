@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon node ./bin/www",
+    "start": "node ./bin/www",
     "migrate:prod": "NODE_ENV=production sequelize db:migrate",
     "cleardev": "sequelize db:migrate:undo:all && sequelize  db:migrate",
     "cleartest": "sequelize db:migrate:undo:all && sequelize  db:migrate",
