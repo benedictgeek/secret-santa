@@ -1,9 +1,9 @@
-const successResponse = require('../utils/successResponse');
-const createHttpError = require('http-errors');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const userDao = require('../dataaccess/user_dataaccess');
-const mailer = require('../utils/mailer');
+const successResponse = require("../utils/successResponse");
+const createHttpError = require("http-errors");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const userDao = require("../dataaccess/user_dataaccess");
+const mailer = require("../utils/mailer");
 
 module.exports.login = async (req, res, next) => {
   let statusCode;
@@ -12,15 +12,15 @@ module.exports.login = async (req, res, next) => {
     let user = await userDao.findWithEmail({ email: body.email });
     if (user == null) {
       statusCode = 401;
-      throw 'Unauthorized';
+      throw "Unauthorized";
     }
     let passwordMatched = await bcrypt.compare(body.password, user.password);
     if (!passwordMatched) {
       statusCode = 401;
-      throw 'Unauthorized';
+      throw "Unauthorized";
     }
-    let token = jwt.sign(user, process.env.TOKEN_SECRET, { expiresIn: '24hr' });
-    res.status(200).json(successResponse(token));
+    let token = jwt.sign(user, process.env.TOKEN_SECRET, { expiresIn: "24hr" });
+    res.status(200).json(successResponse({ user, token }));
   } catch (error) {
     next(createHttpError(statusCode, error));
   }
@@ -33,7 +33,7 @@ module.exports.checkEmail = async (req, res, next) => {
     let user = await userDao.findWithEmail({ email: body.email });
     if (user == null) {
       statusCode = 404;
-      throw 'User with this email not found';
+      throw "User with this email not found";
     }
     res.status(200).json(successResponse(user));
   } catch (error) {
@@ -48,13 +48,13 @@ module.exports.getPasswordResetLink = async (req, res, next) => {
     let userData = await userDao.findWithEmail({ email: body.email });
     if (userData == null) {
       statusCode = 404;
-      throw 'User not found';
+      throw "User not found";
     }
     let passwordResetToken = jwt.sign(
       userData,
       process.env.PASSWORD_RESET_SECRET,
       {
-        expiresIn: '24hr',
+        expiresIn: "24hr",
       }
     );
     delete userData.password;
@@ -62,14 +62,14 @@ module.exports.getPasswordResetLink = async (req, res, next) => {
       successResponse({
         ...userData,
         passwordResetToken:
-          process.env.NODE_ENV == 'test' ? passwordResetToken : null,
+          process.env.NODE_ENV == "test" ? passwordResetToken : null,
       })
     );
 
-    mailer(userData.email, 'Secret Santa Reset password', 'reset_password', {
+    mailer(userData.email, "Secret Santa Reset password", "reset_password", {
       name: userData.name,
       link: `${req.headers.origin}/reset-password/${passwordResetToken}`,
-      linkText: 'Reset',
+      linkText: "Reset",
     });
   } catch (error) {
     console.log(error);
@@ -86,7 +86,7 @@ module.exports.resetPassword = async (req, res, next) => {
       userData = jwt.verify(body.resetToken, process.env.PASSWORD_RESET_SECRET);
     } catch (error) {
       statusCode = 422;
-      throw 'Provided token invalid';
+      throw "Provided token invalid";
     }
     let hashedPassword = await bcrypt.hash(body.password, 12);
     let updatedUserData = await userDao.updateOne({

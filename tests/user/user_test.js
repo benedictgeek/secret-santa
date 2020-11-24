@@ -9,7 +9,7 @@ module.exports.userTests = (app) => () => {
     });
     let data = res.body.data;
     expect(res.statusCode).toEqual(200);
-    process.env.BEARER_TOKEN = data;
+    process.env.BEARER_TOKEN = data.token;
   });
 
   it('should update a user info', async () => {
@@ -53,7 +53,7 @@ module.exports.userTests = (app) => () => {
     });
     let data = res.body.data;
     expect(res.statusCode).toEqual(200);
-    process.env.BEARER_TOKEN = data;
+    process.env.BEARER_TOKEN = data.token;
   });
   it('should check if a user exists', async () => {
     let email = 'test@me.com';
