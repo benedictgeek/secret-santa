@@ -36,7 +36,7 @@ module.exports.create = async (req, res, next) => {
         newTokenList = [...newTokenList, token];
         process.env.MEMBER_TOKENS = JSON.stringify(newTokenList);
       }
-      let url = `${req.headers.origin}/placeholder/${token}`;
+      let url = `${req.headers.origin}/discover/${token}`;
       let groupTitle = req.group.title.toUpperCase();
 
       mailer(member.email, `${groupTitle} Secret Santa`, "santa_invitation", {
@@ -73,7 +73,7 @@ module.exports.sendInvite = async (req, res, next) => {
         process.env.SANTA_SECRET,
         { expiresIn: "999years" }
       );
-      let url = `${req.headers.origin}/placeholder/${token}`;
+      let url = `${req.headers.origin}/discover/${token}`;
       let groupTitle = req.group.title.toUpperCase();
 
       mailer(member.email, `${groupTitle} Secret Santa`, "santa_invitation", {

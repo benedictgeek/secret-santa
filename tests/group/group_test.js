@@ -43,6 +43,15 @@ module.exports.groupTests = (app) => () => {
 
     expect(data.length).toBe(1);
   });
+  it("should get one group", async () => {
+    const res = await request(app)
+      .get(`/groups/${process.env.GROUP_ID}`)
+      .set("Authorization", `Bearer ${process.env.BEARER_TOKEN}`);
+    let data = res.body.data;
+    console.log("DATA", data);
+    expect(res.statusCode).toEqual(200);
+    expect(data.title).toBe("Algorism");
+  });
   it("should update one group info", async () => {
     let groupId = process.env.GROUP_ID;
     let title = "new title";

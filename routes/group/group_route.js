@@ -1,24 +1,32 @@
-const express = require('express');
+const express = require("express");
 
 const router = express.Router();
-const groupController = require('../../controllers/group_controller');
-const { checkAdmin } = require('../../middlewares/check_admin');
-const { handleValidation } = require('../../middlewares/validation');
-const { verifyToken } = require('../../middlewares/verify_token');
-const { validator } = require('./validator');
+const groupController = require("../../controllers/group_controller");
+const { checkAdmin } = require("../../middlewares/check_admin");
+const { handleValidation } = require("../../middlewares/validation");
+const { verifyToken } = require("../../middlewares/verify_token");
+const { validator } = require("./validator");
 
 router.post(
-  '/create',
-  validator('create'),
+  "/create",
+  validator("create"),
   handleValidation,
   groupController.create
 );
 
-router.get('/get-groups', verifyToken, groupController.getUserGroups);
+router.get("/get-groups", verifyToken, groupController.getUserGroups);
+
+router.get(
+  "/:groupId",
+  validator("delete"),
+  handleValidation,
+  verifyToken,
+  groupController.getGroup
+);
 
 router.post(
-  '/update',
-  validator('update'),
+  "/update",
+  validator("update"),
   handleValidation,
   verifyToken,
   checkAdmin,
