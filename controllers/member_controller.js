@@ -1,8 +1,8 @@
-const successResponse = require('../utils/successResponse');
-const createHttpError = require('http-errors');
-const { sequelize, Sequelize } = require('../models/index');
-const memberDao = require('../dataaccess/member_dataaccess');
-const userDao = require('../dataaccess/user_dataaccess');
+const successResponse = require("../utils/successResponse");
+const createHttpError = require("http-errors");
+const { sequelize, Sequelize } = require("../models/index");
+const memberDao = require("../dataaccess/member_dataaccess");
+const userDao = require("../dataaccess/user_dataaccess");
 module.exports.add = async (req, res, next) => {
   let statusCode;
   try {
@@ -27,6 +27,19 @@ module.exports.add = async (req, res, next) => {
   }
 };
 
+module.exports.fetchAll = async (req, res, next) => {
+  let statusCode;
+  try {
+    let body = req.params;
+    let membersData = await memberDao.fetchAll({
+      ...body,
+    });
+    res.status(200).json(successResponse(membersData));
+  } catch (error) {
+    next(createHttpError(statusCode, error));
+  }
+};
+
 module.exports.delete = async (req, res, next) => {
   let statusCode;
   try {
@@ -34,10 +47,10 @@ module.exports.delete = async (req, res, next) => {
     delete body.status;
     let updatedMemberData = await memberDao.updateOne({
       ...body,
-      status: 'deleted',
+      status: "deleted",
     });
     updatedMemberData = updatedMemberData[1][0];
-    res.status(200).json(successResponse('Member deleted successfully'));
+    res.status(200).json(successResponse("Member deleted successfully"));
   } catch (error) {
     next(createHttpError(statusCode, error));
   }

@@ -38,4 +38,13 @@ module.exports.memberTests = (app) => () => {
     expect(data.email).toBe(email);
     expect(data.name).toBe(name);
   });
+  it("should get all members", async () => {
+    const res = await request(app)
+      .get(`/members/get-all/${process.env.GROUP_ID}`)
+      .set("Authorization", `Bearer ${process.env.BEARER_TOKEN}`);
+
+    let data = res.body.data;
+    console.log(data);
+    expect(res.statusCode).toEqual(200);
+  });
 };

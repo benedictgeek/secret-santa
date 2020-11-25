@@ -12,13 +12,16 @@ module.exports.create = async (req, res, next) => {
   try {
     let body = req.body;
     body.groupId = req.group.id;
+    let members = await memberDao.fetchAll({ groupId: body.groupId });
+    //must have at least three members
+    if (members.length < 3) {
+      statusCode = 403;
+      throw "Members list should be atleast three to participate in this event";
+    }
     let createdSanta = await santaDao.create({ ...body });
     res.status(200).json(successResponse(createdSanta));
-    //mail members of new secret santa event with link to view their santa
-    console.log("I STILL HAVE BODY", body);
-    let members = await memberDao.fetchAll({ groupId: body.groupId });
-
     let newTokenList = [];
+    //mail members of new secret santa event with link to view their santa
     members.forEach((member) => {
       let token = jwt.sign(
         {
@@ -123,11 +126,12 @@ module.exports.santaPair = async (req, res, next) => {
     let prospectiveRecipientIds = members.map((member) => member.id);
     if (prospectiveRecipientIds.length == 0) {
       statusCode = 403;
-      throw "This group currently have less than two members";
+      throw "This group currently have less than three members";
     }
     let recipientId = getUnmatchedRecipientId(
       prospectiveRecipientIds,
-      santaPairs
+      santaPairs,
+      memberId
     );
     let createdPair = await santaPairDao.create({
       groupId,
@@ -147,20 +151,34 @@ module.exports.santaPair = async (req, res, next) => {
   }
 };
 
-let getUnmatchedRecipientId = (prospectiveRecipientIds, santaPairs) => {
+let getUnmatchedRecipientId = (
+  prospectiveRecipientIds,
+  santaPairs,
+  memberId
+) => {
+  //get the pair data if current member was previously a recipient
+  let previousPairData = santaPairs.filter(
+    (item) => item.recipientId == memberId
+  );
+
   let recipientIds = santaPairs.map((pair) => pair.recipientId);
   recipientIds = [...new Set(recipientIds)];
+  //take out the member this current member was previously matched with (provider) from propectiveRecipients
+  recipientIds = recipientIds.filter(
+    (item) => item.providerId != previousPairData.providerId
+  );
+  //---->
   //check if everyone else already has a secret santa, so we randomise and someone gets multiple secret santas
-  if (prospectiveRecipientIds.length === recipientIds.length) {
-    return _.shuffle(recipientIds)[0];
-  }
+  // if (prospectiveRecipientIds.length === recipientIds.length) {
+  //   return _.shuffle(recipientIds)[0];
+  // }
+  //---->
 
   let unMatchedRecipientIds = prospectiveRecipientIds.filter(
     (memberId) => !recipientIds.includes(memberId)
   );
-  console.log("RECIPientIds", unMatchedRecipientIds);
+
   let unMatchedRecipientId = _.shuffle(unMatchedRecipientIds)[0];
-  console.log("RECIPientId", unMatchedRecipientId);
 
   return unMatchedRecipientId;
 };

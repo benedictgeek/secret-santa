@@ -22,6 +22,8 @@ module.exports.validator = (method) => {
       return [idParam("groupId"), emailValidatorParam];
     case "update":
       return [stringBodyNotRequired("name"), emailValidator("email")];
+    case "getAll":
+      return [idParam("groupId")];
     default:
       break;
   }

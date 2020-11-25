@@ -22,6 +22,14 @@ router.get(
   memberController.delete
 );
 
+router.get(
+  "/get-all/:groupId",
+  validator("getAll"),
+  handleValidation,
+  checkAdmin,
+  memberController.fetchAll
+);
+
 router.post(
   "/update",
   validator("update"),
@@ -29,6 +37,5 @@ router.post(
   checkAdmin,
   memberController.update
 );
-
 
 module.exports = router;
