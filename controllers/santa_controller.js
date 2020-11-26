@@ -21,7 +21,7 @@ module.exports.create = async (req, res, next) => {
     let createdSanta = await santaDao.create({ ...body });
     res.status(200).json(successResponse(createdSanta));
     let newTokenList = [];
-    //mail members of new Gift Swap event with link to view their santa
+    //mail members of new Secret Gifter event with link to view their santa
     members.forEach((member) => {
       let token = jwt.sign(
         {
@@ -39,7 +39,7 @@ module.exports.create = async (req, res, next) => {
       let url = `${req.headers.origin}/discover/?tk=${token}`;
       let groupTitle = req.group.title.toUpperCase();
 
-      mailer(member.email, `${groupTitle} Gift Swap`, "santa_invitation", {
+      mailer(member.email, `${groupTitle} Secret Gifter`, "santa_invitation", {
         name: member.name,
         groupTitle: groupTitle,
         link: url,
@@ -76,7 +76,7 @@ module.exports.sendInvite = async (req, res, next) => {
       let url = `${req.headers.origin}/discover/${token}`;
       let groupTitle = req.group.title.toUpperCase();
 
-      mailer(member.email, `${groupTitle} Gift Swap`, "santa_invitation", {
+      mailer(member.email, `${groupTitle} Secret Gifter`, "santa_invitation", {
         name: member.name,
         groupTitle: groupTitle,
         link: url,
@@ -121,7 +121,7 @@ module.exports.santaPair = async (req, res, next) => {
       return res.status(200).json(successResponse(pairData));
     }
     let members = await memberDao.fetchAll({ groupId: groupId });
-    //remove provider from members so you dont become a Gift Swap to yourself
+    //remove provider from members so you dont become a Secret Gifter to yourself
     members = members.filter((member) => member.id != memberId);
     let prospectiveRecipientIds = members.map((member) => member.id);
     if (prospectiveRecipientIds.length == 0) {
@@ -144,7 +144,7 @@ module.exports.santaPair = async (req, res, next) => {
     });
     console.log(createdPair);
     res.status(200).json(successResponse(createdPair));
-    //notify Gift Swap by mail
+    //notify Secret Gifter by mail
   } catch (error) {
     console.log(error);
     next(createHttpError(statusCode, error));
@@ -168,7 +168,7 @@ let getUnmatchedRecipientId = (
     (item) => item.providerId != previousPairData.providerId
   );
   //---->
-  //check if everyone else already has a Gift Swap, so we randomise and someone gets multiple Gift Swaps
+  //check if everyone else already has a Secret Gifter, so we randomise and someone gets multiple Secret Gifters
   // if (prospectiveRecipientIds.length === recipientIds.length) {
   //   return _.shuffle(recipientIds)[0];
   // }
