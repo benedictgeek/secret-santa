@@ -163,16 +163,7 @@ let getUnmatchedRecipientId = (
 
   let recipientIds = santaPairs.map((pair) => pair.recipientId);
   recipientIds = [...new Set(recipientIds)];
-  //take out the member this current member was previously matched with (provider) from propectiveRecipients
-  // recipientIds = recipientIds.filter(
-  //   (item) => item.providerId != previousPairData.providerId
-  // );
-  //---->
-  //check if everyone else already has a Secret Gifter, so we randomise and someone gets multiple Secret Gifters
-  // if (prospectiveRecipientIds.length === recipientIds.length) {
-  //   return _.shuffle(recipientIds)[0];
-  // }
-  //---->
+
   //take out the member this current member was previously matched with (provider) from propectiveRecipients
   prospectiveRecipientIds = prospectiveRecipientIds.filter(
     (item) => item != previousPairData.providerId
