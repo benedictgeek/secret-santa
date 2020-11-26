@@ -35,6 +35,7 @@ module.exports.checkEmail = async (req, res, next) => {
       statusCode = 404;
       throw "User with this email not found";
     }
+    delete user.password;
     res.status(200).json(successResponse(user));
   } catch (error) {
     next(createHttpError(statusCode, error));
