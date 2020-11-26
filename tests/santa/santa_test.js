@@ -86,6 +86,8 @@ module.exports.santaTests = (app) => () => {
     expect(res.statusCode).toEqual(200);
     expect(data.provider).not.toBeNull();
     expect(data.recipient).not.toBeNull();
+    expect(data.santa).not.toBeNull();
+    expect(data.group).not.toBeNull();
   });
   it("should update one santa event info", async () => {
     let groupId = process.env.GROUP_ID;

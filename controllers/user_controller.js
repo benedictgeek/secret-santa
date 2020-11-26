@@ -66,7 +66,7 @@ module.exports.getPasswordResetLink = async (req, res, next) => {
       })
     );
 
-    mailer(userData.email, "Secret Santa Reset password", "reset_password", {
+    mailer(userData.email, "Gift Swap Reset password", "reset_password", {
       name: userData.name,
       link: `${req.headers.origin}/reset-password/${passwordResetToken}`,
       linkText: "Reset",
