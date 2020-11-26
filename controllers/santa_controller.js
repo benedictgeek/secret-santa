@@ -161,8 +161,8 @@ let getUnmatchedRecipientId = (
     (item) => item.recipientId == memberId
   );
 
-  // let recipientIds = santaPairs.map((pair) => pair.recipientId);
-  // recipientIds = [...new Set(recipientIds)];
+  let recipientIds = santaPairs.map((pair) => pair.recipientId);
+  recipientIds = [...new Set(recipientIds)];
   //take out the member this current member was previously matched with (provider) from propectiveRecipients
   // recipientIds = recipientIds.filter(
   //   (item) => item.providerId != previousPairData.providerId
@@ -173,6 +173,7 @@ let getUnmatchedRecipientId = (
   //   return _.shuffle(recipientIds)[0];
   // }
   //---->
+  //take out the member this current member was previously matched with (provider) from propectiveRecipients
   prospectiveRecipientIds = prospectiveRecipientIds.filter(
     (item) => item != previousPairData.providerId
   );
