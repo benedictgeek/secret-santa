@@ -16,6 +16,10 @@ let includeModels = [
     model: models.Member,
     as: "recipient",
   },
+  {
+    model: models.Group,
+    as: "group",
+  },
 ];
 
 module.exports.create = async (data, transaction = null) => {
