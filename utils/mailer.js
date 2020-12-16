@@ -24,16 +24,16 @@ module.exports = async (
     // let readyHtml = htmlTemplate(htmlInputData);
     let transporter = nodemailer.createTransport({
       // service: 'Gmail',
-      host: "smtp.clubly.io",
-      port: 587,
+      host: process.env.EMAIL_HOST,
+      port: process.env.EMAIL_PORT,
       secure: false,
       tls: {
         minVersion: "TLSv1",
         rejectUnauthorized: false,
       },
       auth: {
-        user: "no-reply@clubly.io",
-        pass: "x1VqU+%@5cmh",
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
       },
     });
 
